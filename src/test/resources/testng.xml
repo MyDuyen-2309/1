@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Simple Test Suite">
+    <test name="Addition Test">
+        <classes>
+            <!-- Đường dẫn đầy đủ của class cần chạy -->
+            <class name="simpleTest.Ab"/> <!-- Sửa lại đường dẫn class nếu cần -->
+        </classes>
+    </test>
+</suite>
