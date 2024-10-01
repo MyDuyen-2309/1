@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17' # Hoặc phiên bản Java mà bạn sử dụng
+          distribution: 'temurin' # Hoặc 'adopt' nếu bạn muốn
+
+      - name: Build with Maven
+        run: |
+          echo "Starting Maven build..."
+          mvn clean test
+          echo "Maven build completed."
+
+      - name: Install Allure
+        run: |
+          echo "Installing Allure..."
+          wget $(curl -s https://api.github.com/repos/allure-framework/allure2/releases/latest | grep "browser_download_url" | grep "allure-.*zip" | cut -d '"' -f 4) -O allure.zip
+          unzip allure.zip -d allure
+          sudo ln -s $GITHUB_WORKSPACE/allure/allure-*/*/bin/allure /usr/local/bin/allure
+          echo "Allure installation completed."
+
+      - name: Generate Allure report
+        run: |
+          echo "Generating Allure report..."
+          mvn allure:report
+          echo "Allure report generated."
+          echo "Checking allure results directory:"
+          if [ -d target/allure-results ]; then
+            echo "Allure results directory exists."
+            ls target/allure-results
+          else
+            echo "Allure results directory does not exist."
+            exit 1
+          fi
+
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-results
+          path: target/allure-results/**  # Đường dẫn đến kết quả báo cáo Allure
