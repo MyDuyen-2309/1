@@ -13,6 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Clear Maven Cache
+        run: |
+          rm -rf ~/.m2/repository/org/aspectj/aspectjweaver/1.9.22.1
+
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
@@ -22,7 +26,7 @@ jobs:
       - name: Build with Maven
         run: |
           echo "Starting Maven build..."
-          mvn clean test
+          mvn clean test -e  # Thêm thông số -e để có thông tin chi tiết
           echo "Maven build completed."
 
       - name: Install Allure
@@ -51,4 +55,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: allure-results
-          path: target/allure-results/**  # Đường dẫn đến kết quả báo cáo Allure
+          path: target/allure-results/**
