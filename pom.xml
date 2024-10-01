@@ -19,6 +19,12 @@
             <artifactId>selenium-java</artifactId>
             <version>4.11.0</version>
         </dependency>
+        
+        <dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>1.9.22.1</version>
+		</dependency>
 
         <!-- TestNG -->
         <dependency>
