@@ -20,8 +20,16 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17' # Hoặc phiên bản Java mà bạn sử dụng
-          distribution: 'temurin' # Hoặc 'adopt' nếu bạn muốn
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Cache Allure Results
+        uses: actions/cache@v2
+        with:
+          path: target/allure-results
+          key: allure-results-${{ github.sha }}
+          restore-keys: |
+            allure-results-
 
       - name: Build with Maven
         run: |
@@ -56,3 +64,9 @@ jobs:
         with:
           name: allure-results
           path: target/allure-results/**
+
+      - name: Upload Allure History
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-history
+          path: target/allure-results/history
