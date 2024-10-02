@@ -70,3 +70,13 @@ jobs:
         with:
           name: allure-history
           path: target/allure-results/history
+      - name: Check Allure Results
+        run: |
+          echo "Checking allure results directory:"
+          if [ -d target/allure-results ]; then
+            echo "Allure results directory exists."
+            ls target/allure-results
+          else
+            echo "Allure results directory does not exist."
+          fi
+
